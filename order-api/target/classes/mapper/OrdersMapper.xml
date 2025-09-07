@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapi.mapper.OrdersMapper">
+
+    <select id="pageCC" resultType="com.orderapi.entity.OrdersRes">
+        select orders.*,
+               (select u.name from user u where u.id=orders.user_id)userName,
+               (select u.name from user u where u.id=orders.installer_id)installerName
+        from orders
+                 ${ew.customSqlSegment}
+        order by (create_time) desc
+    </select>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.orderapi.entity.Orders">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="bill_id" property="billId" />
+        <result column="total" property="total" />
+        <result column="installer_id" property="installerId" />
+        <result column="order_state" property="orderState" />
+        <result column="insurance_url" property="insuranceUrl" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, bill_id, total, installer_id, order_state, insurance_url, create_time, update_time
+    </sql>
+
+</mapper>
